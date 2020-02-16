@@ -13,7 +13,14 @@ from custom_user.models import Profile
 from custom_user.serializers import ProfileSerializer
 
 
-# get
+def count_applications(data):
+    all_numbers = []
+    for d in data:
+        all_numbers.append(d['number'])
+    return len(set(all_numbers))
+
+
+# get my applications of my club
 @api_view(['GET'])
 def applications_list(request, ):
     if request.user.is_authenticated:
@@ -21,7 +28,10 @@ def applications_list(request, ):
         profile = ProfileSerializer(user).data
         applications = Application.objects.filter(club=profile['club'])
         serializer = ApplicationSerializer(applications, many=True)
-        dic = {"data": serializer.data}
+        dic = {
+            "data": serializer.data,
+            "length": count_applications(serializer.data)
+        }
         return Response(dic, status=status.HTTP_200_OK)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
 
