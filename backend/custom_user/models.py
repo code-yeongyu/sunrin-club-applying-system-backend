@@ -9,15 +9,10 @@ class Profile(models.Model):
     club = models.CharField(max_length=2,
                             choices=[('uf', 'unifox'), ('em', 'emotion'),
                                      ('tl', 'teamlog'), ('l7', 'layer7'),
-                                     ('tl', 'teamlog')])
+                                     ('nf', 'nefus')])
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
-                                on_delete=models.CASCADE)
-
-
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
+                                on_delete=models.CASCADE,
+                                unique=True)
 
 
 @receiver(post_save, sender=User)

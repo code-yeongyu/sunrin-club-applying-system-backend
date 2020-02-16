@@ -16,12 +16,14 @@ from custom_user.serializers import ProfileSerializer
 # get
 @api_view(['GET'])
 def applications_list(request, ):
-    user = Profile.objects.get(user=request.user)
-    profile = ProfileSerializer(user).data
-    applications = Application.objects.filter(club=profile['club'])
-    serializer = ApplicationSerializer(applications, many=True)
-    dic = {"data": serializer.data}
-    return Response(dic, status=status.HTTP_200_OK)
+    if request.user.is_authenticated:
+        user = Profile.objects.get(user=request.user)
+        profile = ProfileSerializer(user).data
+        applications = Application.objects.filter(club=profile['club'])
+        serializer = ApplicationSerializer(applications, many=True)
+        dic = {"data": serializer.data}
+        return Response(dic, status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 # get detailed club info, only allowed to a same club user
