@@ -13,3 +13,4 @@ class Application(models.Model):
     phone_number = models.TextField(null=False, blank=False)
     email = models.EmailField(null=False)
     content = models.TextField(null=False, blank=True)
+    is_hide = models.BooleanField(default=False)
