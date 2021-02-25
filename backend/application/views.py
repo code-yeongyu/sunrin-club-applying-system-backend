@@ -26,7 +26,8 @@ def applications_list(request, ):
     if request.user.is_authenticated:
         user = Profile.objects.get(user=request.user)
         profile = ProfileSerializer(user).data
-        applications = Application.objects.filter(club=profile['club'])
+        applications = Application.objects.filter(club=profile['club'],
+                                                  is_hide=False)
         serializer = ApplicationSerializer(applications, many=True)
         dic = {
             "data": serializer.data,
@@ -38,9 +39,15 @@ def applications_list(request, ):
 
 # get detailed club info, only allowed to a same club user
 class ApplicationDetail(generics.RetrieveDestroyAPIView):
-    queryset = Application.objects.all()
+    queryset = Application.objects.filter(is_hide=False)
     serializer_class = ApplicationSerializer
     permission_classes = (IsSameClub, )
+
+    def delete(self, request, *args, **kwargs):
+        application = Application.objects.get(pk=kwargs['pk'])
+        application.is_hide = True
+        application.save()
+        return Response(status=status.HTTP_200_OK)
 
 
 # creating new application
