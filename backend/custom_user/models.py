@@ -1,3 +1,4 @@
+import pdb
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -15,6 +16,8 @@ class Profile(models.Model):
                                 unique=True)
 
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+@receiver(post_save, sender=User, dispatch_uid='save_new_user_profile')
+def save_profile(sender, instance, created, **kwargs):
+    user = instance
+    if created:
+        Profile.objects.create(user=user)

@@ -26,20 +26,3 @@ class ProfileAPIView(APIView):
             return Response(serializer.errors,
                             status=status.HTTP_406_NOT_ACCEPTABLE)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
-            
-@api_view(['POST'])
-def register(request):
-    form = RegisterForm(request.POST)
-    if form.is_valid():
-        user = form.save(commit=False)
-        user.save()
-        profile = Profile.objects.create(user=user)
-        serializer = ProfileSerializer(profile, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
-        Profile.objects.get(user=user).delete()
-        return Response(serializer.errors,
-                        status=status.HTTP_406_NOT_ACCEPTABLE)
-    return Response(form.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
-            
