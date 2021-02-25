@@ -1,0 +1,30 @@
+version: "3.8"
+
+volumes:
+    db_volume: {}
+
+services:
+    db:
+        container_name: club_applying_system_db
+        restart: always
+        image: postgres
+        volumes:
+            - db_volume:/var/lib/club_applying_system_db/postgresql/data
+        environment:
+            - POSTGRES_DB=database
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=oinkoinkpassword
+            - POSTGRES_INITDB_ARGS=--encoding=UTF-8
+    was:
+        container_name: club_applying_system_was
+        restart: always
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        environment:
+            - DB_HOST=club_applying_system_db
+            - DB_USERNAME=postgres
+            - DB_PASSWORD=oinkoinkpassword
+            - SECRET_KEY=e@4pbj2)qz@de&-3my37ytgo%jijfiv5d!cz!itpf101l9)=sl
+        ports:
+            - 8000:8000
