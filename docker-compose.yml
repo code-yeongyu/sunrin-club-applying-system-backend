@@ -1,4 +1,4 @@
-version: "3"
+version: "3.3"
 
 volumes:
     db_volume: {}
@@ -18,6 +18,8 @@ services:
     was:
         container_name: club_applying_system_was
         restart: always
+        depends_on:
+            - "db"
         build:
             context: .
             dockerfile: ./Dockerfile
@@ -27,4 +29,4 @@ services:
             - DB_PASSWORD=oinkoinkpassword
             - "SECRET_KEY=${SECRET_KEY}"
         ports:
-            - "${PORT}:${PORT}"
+            - "${PORT}:5000"
