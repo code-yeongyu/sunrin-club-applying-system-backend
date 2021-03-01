@@ -27,4 +27,4 @@ services:
             - DB_PASSWORD=oinkoinkpassword
             - "SECRET_KEY=${SECRET_KEY}"
         ports:
-            - 8000:8000
+            - "${PORT}:${PORT}"
