@@ -1,7 +1,9 @@
+from datetime import datetime
 from rest_framework import permissions
 from custom_user.models import Profile
 from application.serializers import ApplicationSerializer
 from custom_user.serializers import ProfileSerializer
+from backend import settings
 
 
 class IsSameClub(permissions.BasePermission):
@@ -10,3 +12,9 @@ class IsSameClub(permissions.BasePermission):
         application = ApplicationSerializer(obj)
         profile = ProfileSerializer(user)
         return application['club'].value == profile['club'].value
+
+
+class IsBeforeDue(permissions.BasePermission):
+    def has_permission(self, request, view):
+        date_time_obj = datetime.strptime(settings.DUE_DATE, '%Y-%m-%d %H:%M')
+        return date_time_obj > datetime.now()
