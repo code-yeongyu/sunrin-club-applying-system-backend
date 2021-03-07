@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from application.serializers import ApplicationSerializer
 from rest_framework import permissions
 from backend.permissions import IsSameClub
+from backend.permissions import IsBeforeDue
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
@@ -51,7 +52,8 @@ class ApplicationDetail(generics.RetrieveDestroyAPIView):
 
 
 # creating new application
-class ApplicationCreation(generics.CreateAPIView, APIView):
+class ApplicationCreation(generics.CreateAPIView):
     queryset = Application.objects.all()
     serializer_class = ApplicationSerializer
-    permission_classes = (permissions.AllowAny, )
+    permission_classes = (IsBeforeDue, )
+        
