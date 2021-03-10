@@ -56,4 +56,3 @@ class ApplicationCreation(generics.CreateAPIView):
     queryset = Application.objects.all()
     serializer_class = ApplicationSerializer
     permission_classes = (IsBeforeDue, )
-        

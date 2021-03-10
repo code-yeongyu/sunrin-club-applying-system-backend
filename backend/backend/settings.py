@@ -149,4 +149,4 @@ REST_FRAMEWORK = {
     ),
 }
 
-DUE_DATE="2021-03-17 20:00"
+DUE_DATE="2021-03-17 21:00" # it is supposed to be 20:00, but set as 21:00 for just in cases

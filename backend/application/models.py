@@ -14,3 +14,4 @@ class Application(models.Model):
     email = models.EmailField(null=False)
     content = models.TextField(null=False, blank=True)
     is_hide = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
